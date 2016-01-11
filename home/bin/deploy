@@ -4,7 +4,7 @@ OPTIND=1
 
 domain='upliftinglemma.net'
 subdomain='@'
-webroot='/var/www'
+webroot='/srv/www/vhosts'
 docroot='/htdocs'
 
 while getopts 'D:d:s:w:' opt; do
