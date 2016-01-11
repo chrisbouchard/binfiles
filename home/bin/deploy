@@ -5,10 +5,12 @@ OPTIND=1
 domain='upliftinglemma.net'
 subdomain='@'
 webroot='/var/www'
+docroot='/htdocs'
 
-while getopts 'd:D:s:' opt; do
+while getopts 'D:d:s:w:' opt; do
     case $opt in
-        d) domain=$OPTARG ;;
+        D) domain=$OPTARG ;;
+        d) docroot=$OPTARG ;;
         s) subdomain=$OPTARG ;;
         w) webroot=$OPTARG ;;
     esac
@@ -36,7 +38,7 @@ fi
 
 local_target="${local_path%%/}/"
 
-remote_path="${webroot%%/}/${full_domain}"
+remote_path="${webroot%%/}/${full_domain}${docroot}"
 remote_target="${remote_server}:${remote_path%%/}/"
 
 rsync --verbose --recursive $local_target $remote_target
