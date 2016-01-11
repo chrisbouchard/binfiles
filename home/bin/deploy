@@ -1,0 +1,43 @@
+#!/usr/bin/env zsh
+
+OPTIND=1
+
+domain='upliftinglemma.net'
+subdomain='@'
+webroot='/var/www'
+
+while getopts 'd:D:s:' opt; do
+    case $opt in
+        d) domain=$OPTARG ;;
+        s) subdomain=$OPTARG ;;
+        w) webroot=$OPTARG ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+[[ $1 == '--' ]] && shift
+
+remote_server=$1
+local_path=${2:-'.'}
+
+if [[ -z $remote_server ]]
+then
+    echo 'Missing server' >&2
+    exit 1
+fi
+
+if [[ $subdomain == '@' ]]
+then
+    full_domain=$domain
+else
+    full_domain="${subdomain}.${domain}"
+fi
+
+local_target="${local_path%%/}/"
+
+remote_path="${webroot%%/}/${full_domain}"
+remote_target="${remote_server}:${remote_path%%/}/"
+
+rsync --verbose --recursive $local_target $remote_target
+
