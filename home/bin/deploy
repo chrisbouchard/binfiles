@@ -41,5 +41,5 @@ local_target="${local_path%%/}/"
 remote_path="${webroot%%/}/${full_domain}${docroot}"
 remote_target="${remote_server}:${remote_path%%/}/"
 
-rsync --verbose --recursive $local_target $remote_target
+rsync --verbose --recursive --delete $local_target $remote_target
 
